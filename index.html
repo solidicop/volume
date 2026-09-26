@@ -1,0 +1,2615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta name="theme-color" content="#1769e0">
+
+<title>Container Volume Calculator</title>
+
+<style>
+/* =========================================================
+   BASIC THEME
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #f3f7fc;
+  --card: #ffffff;
+  --text: #182235;
+  --muted: #66758a;
+
+  --primary: #1769e0;
+  --primary-dark: #0e4fae;
+  --primary-light: #e9f3ff;
+
+  --success: #087443;
+  --success-light: #eaf8f0;
+
+  --border: #d9e2ec;
+
+  --milk: #f7f1d5;
+  --milk-dark: #e9dfb6;
+
+  --danger: #b42318;
+  --danger-light: #fff0ee;
+
+  --shadow: 0 12px 35px rgba(28, 59, 100, 0.10);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at top,
+      #ffffff 0,
+      #f3f7fc 40%,
+      #edf3fa 100%
+    );
+
+  color: var(--text);
+
+  min-height: 100vh;
+}
+
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+
+.app {
+  width: min(1150px, 100%);
+  margin: auto;
+
+  padding:
+    18px
+    14px
+    45px;
+}
+
+
+header {
+  text-align: center;
+  padding: 8px 8px 20px;
+}
+
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  background: var(--primary-light);
+
+  color: var(--primary-dark);
+
+  padding: 9px 15px;
+
+  border-radius: 999px;
+
+  font-size: 0.96rem;
+  font-weight: 800;
+}
+
+
+header h1 {
+  margin:
+    15px
+    auto
+    9px;
+
+  max-width: 750px;
+
+  font-size:
+    clamp(
+      2rem,
+      7vw,
+      3.5rem
+    );
+
+  line-height: 1.05;
+}
+
+
+header p {
+  max-width: 680px;
+  margin: auto;
+
+  color: var(--muted);
+
+  font-size:
+    clamp(
+      1rem,
+      3vw,
+      1.2rem
+    );
+
+  line-height: 1.55;
+}
+
+
+.main-grid {
+  display: grid;
+  gap: 18px;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.card {
+  background: rgba(255,255,255,0.94);
+
+  border: 1px solid rgba(217,226,236,0.8);
+
+  border-radius: 25px;
+
+  padding: 20px;
+
+  box-shadow: var(--shadow);
+
+  backdrop-filter: blur(7px);
+}
+
+
+.card-title {
+  margin: 0 0 5px;
+
+  font-size: 1.25rem;
+  font-weight: 850;
+}
+
+
+.card-subtitle {
+  margin: 0 0 18px;
+
+  color: var(--muted);
+
+  line-height: 1.5;
+
+  font-size: 0.98rem;
+}
+
+
+/* =========================================================
+   CONTAINER DRAWING AREA
+========================================================= */
+
+.visual-card {
+  overflow: hidden;
+}
+
+
+.visual-wrapper {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 410px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #ffffff 0%,
+      #f6faff 60%,
+      #eef5fd 100%
+    );
+}
+
+
+.visual-wrapper::before {
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  border-radius: 50%;
+
+  background: rgba(23,105,224,0.05);
+
+  filter: blur(10px);
+
+  animation: glow 4s ease-in-out infinite;
+}
+
+
+@keyframes glow {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.45;
+  }
+
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+}
+
+
+svg {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 560px;
+
+  height: auto;
+}
+
+
+/* =========================================================
+   SVG STYLING
+========================================================= */
+
+.container-shell {
+  fill: rgba(204,230,255,0.35);
+
+  stroke: #385b84;
+
+  stroke-width: 4;
+
+  stroke-linejoin: round;
+}
+
+
+.container-top {
+  fill: #eef7ff;
+
+  stroke: #385b84;
+
+  stroke-width: 4;
+}
+
+
+.container-bottom {
+  fill: none;
+
+  stroke: #385b84;
+
+  stroke-width: 4;
+}
+
+
+.dimension-line {
+  stroke: #76869a;
+
+  stroke-width: 3;
+
+  stroke-linecap: round;
+
+  transition: 0.25s ease;
+}
+
+
+.dimension-cap {
+  stroke: #76869a;
+
+  stroke-width: 3;
+
+  transition: 0.25s ease;
+}
+
+
+.dimension-text {
+  fill: #647287;
+
+  font-size: 17px;
+
+  font-weight: 800;
+
+  text-anchor: middle;
+
+  transition: 0.25s ease;
+}
+
+
+.dimension-value {
+  fill: var(--primary);
+
+  font-size: 16px;
+
+  font-weight: 900;
+
+  text-anchor: middle;
+}
+
+
+.active-measurement {
+  stroke: var(--primary);
+
+  stroke-width: 6;
+
+  filter:
+    drop-shadow(
+      0 0 7px
+      rgba(23,105,224,0.4)
+    );
+}
+
+
+.active-label {
+  fill: var(--primary);
+
+  transform-box: fill-box;
+  transform-origin: center;
+
+  animation: labelPulse 0.7s ease;
+}
+
+
+@keyframes labelPulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.13);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* =========================================================
+   LIQUID
+========================================================= */
+
+.milk {
+  fill: var(--milk);
+
+  opacity: 0.92;
+}
+
+
+.milk-surface {
+  fill: #fff9df;
+
+  stroke: var(--milk-dark);
+
+  stroke-width: 2;
+
+  opacity: 0;
+}
+
+
+.milk-fill-group {
+  transform-origin: bottom center;
+
+  transform: scaleY(0);
+
+  transition:
+    transform
+    1.6s
+    cubic-bezier(.2,.8,.2,1);
+}
+
+
+.milk-fill-group.filled {
+  transform: scaleY(1);
+}
+
+
+.milk-shine {
+  fill: rgba(255,255,255,0.42);
+}
+
+
+/* =========================================================
+   STEP MESSAGE
+========================================================= */
+
+.step-bubble {
+  margin-top: 13px;
+
+  min-height: 60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  background: var(--primary-light);
+
+  color: var(--primary-dark);
+
+  border-radius: 17px;
+
+  padding: 13px 15px;
+
+  font-weight: 800;
+
+  line-height: 1.4;
+
+  transition: 0.25s ease;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.fields {
+  display: grid;
+  gap: 16px;
+}
+
+
+.field {
+  border: 2px solid var(--border);
+
+  border-radius: 19px;
+
+  padding: 15px;
+
+  background: #fff;
+
+  transition:
+    0.2s ease;
+}
+
+
+.field:focus-within {
+  border-color: var(--primary);
+
+  box-shadow:
+    0 0 0 5px
+    var(--primary-light);
+
+  transform: translateY(-2px);
+}
+
+
+.field label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 6px;
+
+  font-size: 1.08rem;
+
+  font-weight: 850;
+}
+
+
+.number-badge {
+  display: inline-flex;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 30px;
+  height: 30px;
+
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: var(--primary);
+
+  color: white;
+
+  font-size: 0.93rem;
+}
+
+
+.hint {
+  color: var(--muted);
+
+  margin:
+    0
+    0
+    10px
+    40px;
+
+  font-size: 0.91rem;
+
+  line-height: 1.4;
+}
+
+
+.input-row {
+  display: flex;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  border: 2px solid var(--border);
+
+  background: white;
+}
+
+
+.input-row:focus-within {
+  border-color: var(--primary);
+}
+
+
+input {
+  flex: 1;
+
+  width: 100%;
+
+  min-width: 0;
+
+  border: none;
+
+  outline: none;
+
+  padding:
+    15px
+    14px;
+
+  font-size: 1.5rem;
+
+  font-weight: 800;
+
+  color: var(--text);
+
+  background: white;
+}
+
+
+.unit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 70px;
+
+  padding: 0 14px;
+
+  background: #f5f8fc;
+
+  color: var(--muted);
+
+  font-size: 1.05rem;
+
+  font-weight: 900;
+
+  border-left:
+    2px solid
+    var(--border);
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.buttons {
+  display: grid;
+
+  gap: 11px;
+
+  margin-top: 18px;
+}
+
+
+button {
+  width: 100%;
+
+  min-height: 62px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  padding: 13px 18px;
+
+  font: inherit;
+
+  font-size: 1.13rem;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    opacity 0.12s ease;
+}
+
+
+button:active {
+  transform: scale(0.98);
+}
+
+
+.calculate {
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      #3489f1
+    );
+
+  color: white;
+
+  box-shadow:
+    0 10px 25px
+    rgba(23,105,224,0.25);
+}
+
+
+.calculate:hover {
+  box-shadow:
+    0 13px 30px
+    rgba(23,105,224,0.34);
+}
+
+
+.example {
+  background: var(--primary-light);
+
+  color: var(--primary-dark);
+}
+
+
+.reset {
+  background: #edf1f5;
+
+  color: #445166;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error {
+  display: none;
+
+  margin-top: 15px;
+
+  padding: 14px 16px;
+
+  border-radius: 15px;
+
+  background: var(--danger-light);
+
+  color: var(--danger);
+
+  font-weight: 750;
+
+  line-height: 1.45;
+}
+
+
+.error.show {
+  display: block;
+}
+
+
+/* =========================================================
+   RESULT CARD
+========================================================= */
+
+.result-card {
+  display: none;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f1fff7
+    );
+
+  border:
+    2px solid
+    #cfeedd;
+}
+
+
+.result-card.show {
+  display: block;
+
+  animation:
+    resultAppear
+    0.55s ease;
+}
+
+
+@keyframes resultAppear {
+  from {
+    opacity: 0;
+    transform:
+      translateY(20px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+.result-icon {
+  font-size: 2.4rem;
+}
+
+
+.result-title {
+  color: var(--muted);
+
+  font-size: 1.05rem;
+
+  font-weight: 800;
+
+  margin-top: 4px;
+}
+
+
+.litres {
+  margin: 12px 0;
+
+  color: var(--success);
+
+  font-size:
+    clamp(
+      3.3rem,
+      14vw,
+      6rem
+    );
+
+  font-weight: 950;
+
+  line-height: 1;
+}
+
+
+.litres small {
+  font-size: 0.37em;
+}
+
+
+.friendly-result {
+  max-width: 600px;
+
+  margin: auto;
+
+  background: var(--success-light);
+
+  border-radius: 17px;
+
+  padding: 14px;
+
+  color: #075c36;
+
+  font-size: 1.1rem;
+
+  font-weight: 800;
+
+  line-height: 1.45;
+}
+
+
+.result-details {
+  margin-top: 15px;
+
+  color: var(--muted);
+
+  font-size: 0.96rem;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+  max-width: 700px;
+
+  margin:
+    25px
+    auto
+    0;
+
+  text-align: center;
+
+  color: var(--muted);
+
+  font-size: 0.9rem;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   PC / TABLET
+========================================================= */
+
+@media (min-width: 850px) {
+
+  .app {
+    padding-top: 28px;
+  }
+
+  .main-grid {
+    grid-template-columns:
+      minmax(0, 1.05fr)
+      minmax(380px, 0.95fr);
+
+    align-items: start;
+  }
+
+  .visual-card {
+    position: sticky;
+    top: 20px;
+  }
+
+  .visual-wrapper {
+    min-height: 570px;
+  }
+
+  .buttons {
+    grid-template-columns:
+      2fr
+      1fr
+      1fr;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 370px) {
+
+  .card {
+    padding: 15px;
+    border-radius: 20px;
+  }
+
+  .visual-wrapper {
+    min-height: 340px;
+  }
+
+  .hint {
+    margin-left: 0;
+  }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+}
+</style>
+</head>
+
+
+<body>
+
+<main class="app">
+
+<header>
+
+  <div class="logo">
+    🥛 Simple Volume Helper
+  </div>
+
+  <h1>
+    How Many Litres Does It Hold?
+  </h1>
+
+  <p>
+    Enter just three simple measurements.
+    The container drawing changes with your numbers
+    and calculates the capacity for you.
+  </p>
+
+</header>
+
+
+<div class="main-grid">
+
+
+<!-- =====================================================
+     LEFT / TOP: VISUAL
+===================================================== -->
+
+<section class="card visual-card">
+
+  <h2 class="card-title">
+    Your Container
+  </h2>
+
+  <p class="card-subtitle">
+    Watch the drawing change as you enter the measurements.
+  </p>
+
+
+  <div class="visual-wrapper">
+
+    <svg
+      viewBox="0 0 560 520"
+      role="img"
+      aria-label="Animated conical container showing top diameter, bottom diameter and vertical height"
+    >
+
+      <defs>
+
+        <clipPath id="containerClip">
+
+          <path
+            id="clipShape"
+            d="
+              M180 120
+              Q280 92 380 120
+              L430 400
+              Q280 438 130 400
+              Z
+            "
+          />
+
+        </clipPath>
+
+      </defs>
+
+
+      <!-- SHADOW -->
+
+      <ellipse
+        id="shadow"
+        cx="280"
+        cy="430"
+        rx="155"
+        ry="18"
+
+        fill="rgba(20,45,80,0.12)"
+      />
+
+
+      <!-- MILK / LIQUID -->
+
+      <g
+        id="milkGroup"
+        class="milk-fill-group"
+        clip-path="url(#containerClip)"
+      >
+
+        <rect
+          id="milkRect"
+          class="milk"
+          x="80"
+          y="110"
+          width="400"
+          height="310"
+        />
+
+        <ellipse
+          id="milkSurface"
+          class="milk-surface"
+
+          cx="280"
+          cy="130"
+
+          rx="100"
+          ry="20"
+        />
+
+        <path
+          class="milk-shine"
+
+          d="
+            M185 155
+            Q205 145 218 160
+            L195 350
+            Q180 355 170 345
+            Z
+          "
+        />
+
+      </g>
+
+
+      <!-- CONTAINER BODY -->
+
+      <path
+        id="containerBody"
+
+        class="container-shell"
+
+        d="
+          M180 120
+          Q280 92 380 120
+          L430 400
+          Q280 438 130 400
+          Z
+        "
+      />
+
+
+      <!-- TOP ELLIPSE -->
+
+      <ellipse
+        id="topEllipse"
+
+        class="container-top"
+
+        cx="280"
+        cy="120"
+
+        rx="100"
+        ry="24"
+      />
+
+
+      <!-- BOTTOM CURVE -->
+
+      <path
+        id="bottomCurve"
+
+        class="container-bottom"
+
+        d="
+          M130 400
+          Q280 438 430 400
+        "
+      />
+
+
+      <!-- =================================================
+           TOP DIAMETER
+      ================================================= -->
+
+      <line
+        id="topLine"
+
+        class="dimension-line"
+
+        x1="180"
+        y1="68"
+
+        x2="380"
+        y2="68"
+      />
+
+      <line
+        id="topCapLeft"
+
+        class="dimension-cap"
+
+        x1="180"
+        y1="56"
+
+        x2="180"
+        y2="80"
+      />
+
+      <line
+        id="topCapRight"
+
+        class="dimension-cap"
+
+        x1="380"
+        y1="56"
+
+        x2="380"
+        y2="80"
+      />
+
+
+      <text
+        id="topLabel"
+
+        class="dimension-text"
+
+        x="280"
+        y="45"
+      >
+        TOP DIAMETER
+      </text>
+
+
+      <text
+        id="topValue"
+
+        class="dimension-value"
+
+        x="280"
+        y="94"
+      >
+        —
+      </text>
+
+
+      <!-- =================================================
+           HEIGHT
+      ================================================= -->
+
+      <line
+        id="heightLine"
+
+        class="dimension-line"
+
+        x1="500"
+        y1="120"
+
+        x2="500"
+        y2="400"
+      />
+
+      <line
+        id="heightCapTop"
+
+        class="dimension-cap"
+
+        x1="488"
+        y1="120"
+
+        x2="512"
+        y2="120"
+      />
+
+      <line
+        id="heightCapBottom"
+
+        class="dimension-cap"
+
+        x1="488"
+        y1="400"
+
+        x2="512"
+        y2="400"
+      />
+
+
+      <text
+        id="heightLabel"
+
+        class="dimension-text"
+
+        x="467"
+        y="265"
+
+        transform="
+          rotate(
+            -90
+            467
+            265
+          )
+        "
+      >
+        VERTICAL HEIGHT
+      </text>
+
+
+      <text
+        id="heightValue"
+
+        class="dimension-value"
+
+        x="520"
+        y="265"
+
+        transform="
+          rotate(
+            -90
+            520
+            265
+          )
+        "
+      >
+        —
+      </text>
+
+
+      <!-- =================================================
+           BOTTOM DIAMETER
+      ================================================= -->
+
+      <line
+        id="bottomLine"
+
+        class="dimension-line"
+
+        x1="130"
+        y1="475"
+
+        x2="430"
+        y2="475"
+      />
+
+      <line
+        id="bottomCapLeft"
+
+        class="dimension-cap"
+
+        x1="130"
+        y1="463"
+
+        x2="130"
+        y2="487"
+      />
+
+      <line
+        id="bottomCapRight"
+
+        class="dimension-cap"
+
+        x1="430"
+        y1="463"
+
+        x2="430"
+        y2="487"
+      />
+
+
+      <text
+        id="bottomLabel"
+
+        class="dimension-text"
+
+        x="280"
+        y="458"
+      >
+        BOTTOM DIAMETER
+      </text>
+
+
+      <text
+        id="bottomValue"
+
+        class="dimension-value"
+
+        x="280"
+        y="505"
+      >
+        —
+      </text>
+
+    </svg>
+
+  </div>
+
+
+  <div
+    id="stepBubble"
+    class="step-bubble"
+  >
+    👆 Start with the top diameter.
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     RIGHT / BOTTOM: INPUTS
+===================================================== -->
+
+<div>
+
+
+<section class="card">
+
+  <h2 class="card-title">
+    Enter the Measurements
+  </h2>
+
+  <p class="card-subtitle">
+    Use centimetres.
+    Measure straight across or straight upward.
+  </p>
+
+
+  <div class="fields">
+
+
+    <!-- TOP -->
+
+    <div class="field">
+
+      <label for="topDiameter">
+
+        <span class="number-badge">
+          1
+        </span>
+
+        Top Diameter
+
+      </label>
+
+      <div class="hint">
+        Measure straight across the top opening.
+      </div>
+
+
+      <div class="input-row">
+
+        <input
+          id="topDiameter"
+
+          type="number"
+
+          inputmode="decimal"
+
+          step="any"
+
+          min="0"
+
+          placeholder="Example: 30"
+
+          autocomplete="off"
+        >
+
+        <span class="unit">
+          cm
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- BOTTOM -->
+
+    <div class="field">
+
+      <label for="bottomDiameter">
+
+        <span class="number-badge">
+          2
+        </span>
+
+        Bottom Diameter
+
+      </label>
+
+      <div class="hint">
+        Measure straight across the bottom.
+      </div>
+
+
+      <div class="input-row">
+
+        <input
+          id="bottomDiameter"
+
+          type="number"
+
+          inputmode="decimal"
+
+          step="any"
+
+          min="0"
+
+          placeholder="Example: 45"
+
+          autocomplete="off"
+        >
+
+        <span class="unit">
+          cm
+        </span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- HEIGHT -->
+
+    <div class="field">
+
+      <label for="height">
+
+        <span class="number-badge">
+          3
+        </span>
+
+        Vertical Height
+
+      </label>
+
+      <div class="hint">
+        Measure straight upward.
+        Do not measure along the sloped wall.
+      </div>
+
+
+      <div class="input-row">
+
+        <input
+          id="height"
+
+          type="number"
+
+          inputmode="decimal"
+
+          step="any"
+
+          min="0"
+
+          placeholder="Example: 50"
+
+          autocomplete="off"
+        >
+
+        <span class="unit">
+          cm
+        </span>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <div
+    id="error"
+    class="error"
+  >
+    Please enter all three measurements using numbers greater than zero.
+  </div>
+
+
+  <div class="buttons">
+
+    <button
+      id="calculateButton"
+      class="calculate"
+    >
+      🥛 Calculate Litres
+    </button>
+
+
+    <button
+      id="exampleButton"
+      class="example"
+    >
+      Try Example
+    </button>
+
+
+    <button
+      id="resetButton"
+      class="reset"
+    >
+      Reset
+    </button>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     RESULT
+===================================================== -->
+
+<section
+  id="resultCard"
+
+  class="card result-card"
+
+  aria-live="polite"
+>
+
+  <div class="result-icon">
+    🥛
+  </div>
+
+
+  <div class="result-title">
+    Approximate Capacity
+  </div>
+
+
+  <div class="litres">
+
+    <span id="litreValue">
+      0
+    </span>
+
+    <small>
+      L
+    </small>
+
+  </div>
+
+
+  <div
+    id="friendlyResult"
+    class="friendly-result"
+  >
+  </div>
+
+
+  <div class="result-details">
+
+    <div>
+      Volume:
+      <strong id="cmValue">
+        0
+      </strong>
+      cm³
+    </div>
+
+    <div>
+      1 litre = 1,000 cm³
+    </div>
+
+  </div>
+
+</section>
+
+
+</div>
+
+</div>
+
+
+<footer>
+
+  Designed for containers with a circular top,
+  circular bottom, centered shape,
+  and evenly sloped sides.
+
+  <br><br>
+
+  Measurements should be taken from the
+  <strong>inside</strong> of the container
+  when calculating how much liquid it can hold.
+
+</footer>
+
+
+</main>
+
+
+
+<script>
+
+/* =========================================================
+   INPUT REFERENCES
+========================================================= */
+
+const topInput =
+  document.getElementById("topDiameter");
+
+const bottomInput =
+  document.getElementById("bottomDiameter");
+
+const heightInput =
+  document.getElementById("height");
+
+
+const calculateButton =
+  document.getElementById("calculateButton");
+
+const exampleButton =
+  document.getElementById("exampleButton");
+
+const resetButton =
+  document.getElementById("resetButton");
+
+
+const resultCard =
+  document.getElementById("resultCard");
+
+const errorBox =
+  document.getElementById("error");
+
+const stepBubble =
+  document.getElementById("stepBubble");
+
+
+/* =========================================================
+   SVG REFERENCES
+========================================================= */
+
+const body =
+  document.getElementById("containerBody");
+
+const clipShape =
+  document.getElementById("clipShape");
+
+const topEllipse =
+  document.getElementById("topEllipse");
+
+const bottomCurve =
+  document.getElementById("bottomCurve");
+
+const shadow =
+  document.getElementById("shadow");
+
+
+const topLine =
+  document.getElementById("topLine");
+
+const topCapLeft =
+  document.getElementById("topCapLeft");
+
+const topCapRight =
+  document.getElementById("topCapRight");
+
+const topLabel =
+  document.getElementById("topLabel");
+
+const topValue =
+  document.getElementById("topValue");
+
+
+const bottomLine =
+  document.getElementById("bottomLine");
+
+const bottomCapLeft =
+  document.getElementById("bottomCapLeft");
+
+const bottomCapRight =
+  document.getElementById("bottomCapRight");
+
+const bottomLabel =
+  document.getElementById("bottomLabel");
+
+const bottomValue =
+  document.getElementById("bottomValue");
+
+
+const heightLine =
+  document.getElementById("heightLine");
+
+const heightCapTop =
+  document.getElementById("heightCapTop");
+
+const heightCapBottom =
+  document.getElementById("heightCapBottom");
+
+const heightLabel =
+  document.getElementById("heightLabel");
+
+const heightValue =
+  document.getElementById("heightValue");
+
+
+const milkGroup =
+  document.getElementById("milkGroup");
+
+const milkSurface =
+  document.getElementById("milkSurface");
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function getNumber(input) {
+
+  const value =
+    parseFloat(input.value);
+
+  return Number.isFinite(value)
+    ? value
+    : null;
+
+}
+
+
+function clamp(
+  value,
+  min,
+  max
+) {
+
+  return Math.min(
+    Math.max(
+      value,
+      min
+    ),
+    max
+  );
+
+}
+
+
+/* =========================================================
+   LIVE SHAPE UPDATE
+========================================================= */
+
+function updateShape() {
+
+  const top =
+    getNumber(topInput);
+
+  const bottom =
+    getNumber(bottomInput);
+
+  const height =
+    getNumber(heightInput);
+
+
+  /*
+    Use sensible visual defaults
+    before the user enters anything.
+  */
+
+  const visualTop =
+    top && top > 0
+      ? top
+      : 30;
+
+  const visualBottom =
+    bottom && bottom > 0
+      ? bottom
+      : 45;
+
+  const visualHeight =
+    height && height > 0
+      ? height
+      : 50;
+
+
+  /*
+    Determine proportions.
+
+    We only use the measurements
+    to DRAW the container.
+
+    The actual calculation later
+    still uses the exact values.
+  */
+
+  const largestDiameter =
+    Math.max(
+      visualTop,
+      visualBottom
+    );
+
+
+  const topRatio =
+    visualTop /
+    largestDiameter;
+
+  const bottomRatio =
+    visualBottom /
+    largestDiameter;
+
+
+  /*
+    Keep the graphic usable even if
+    someone enters extreme numbers.
+  */
+
+  const maxHalfWidth = 150;
+
+  const topHalf =
+    clamp(
+      maxHalfWidth * topRatio,
+      55,
+      150
+    );
+
+  const bottomHalf =
+    clamp(
+      maxHalfWidth * bottomRatio,
+      55,
+      150
+    );
+
+
+  const centerX = 280;
+
+
+  /*
+    Height also changes visually.
+  */
+
+  const visualHeightScale =
+    clamp(
+      visualHeight / 50,
+      0.65,
+      1.25
+    );
+
+
+  const topY = 120;
+
+  const bottomY =
+    topY +
+    280 *
+    visualHeightScale;
+
+
+  /*
+    Limit the drawing.
+  */
+
+  const finalBottomY =
+    clamp(
+      bottomY,
+      300,
+      410
+    );
+
+
+  const topLeft =
+    centerX -
+    topHalf;
+
+  const topRight =
+    centerX +
+    topHalf;
+
+
+  const bottomLeft =
+    centerX -
+    bottomHalf;
+
+  const bottomRight =
+    centerX +
+    bottomHalf;
+
+
+  /*
+    Update the main container shape.
+  */
+
+  const path = `
+    M ${topLeft} ${topY}
+    Q ${centerX} ${topY - 27}
+      ${topRight} ${topY}
+
+    L ${bottomRight} ${finalBottomY}
+
+    Q ${centerX} ${finalBottomY + 38}
+      ${bottomLeft} ${finalBottomY}
+
+    Z
+  `;
+
+
+  body.setAttribute(
+    "d",
+    path
+  );
+
+
+  clipShape.setAttribute(
+    "d",
+    path
+  );
+
+
+  /*
+    Top ellipse.
+  */
+
+  topEllipse.setAttribute(
+    "rx",
+    topHalf
+  );
+
+
+  /*
+    Bottom curve.
+  */
+
+  bottomCurve.setAttribute(
+    "d",
+    `
+    M ${bottomLeft} ${finalBottomY}
+    Q ${centerX} ${finalBottomY + 38}
+      ${bottomRight} ${finalBottomY}
+    `
+  );
+
+
+  /*
+    Shadow.
+  */
+
+  shadow.setAttribute(
+    "cy",
+    finalBottomY + 30
+  );
+
+  shadow.setAttribute(
+    "rx",
+    bottomHalf + 8
+  );
+
+
+  /*
+    Top measurement.
+  */
+
+  topLine.setAttribute(
+    "x1",
+    topLeft
+  );
+
+  topLine.setAttribute(
+    "x2",
+    topRight
+  );
+
+  topCapLeft.setAttribute(
+    "x1",
+    topLeft
+  );
+
+  topCapLeft.setAttribute(
+    "x2",
+    topLeft
+  );
+
+  topCapRight.setAttribute(
+    "x1",
+    topRight
+  );
+
+  topCapRight.setAttribute(
+    "x2",
+    topRight
+  );
+
+
+  /*
+    Bottom measurement.
+  */
+
+  const bottomMeasureY =
+    Math.min(
+      finalBottomY + 75,
+      475
+    );
+
+
+  bottomLine.setAttribute(
+    "x1",
+    bottomLeft
+  );
+
+  bottomLine.setAttribute(
+    "x2",
+    bottomRight
+  );
+
+  bottomLine.setAttribute(
+    "y1",
+    bottomMeasureY
+  );
+
+  bottomLine.setAttribute(
+    "y2",
+    bottomMeasureY
+  );
+
+
+  bottomCapLeft.setAttribute(
+    "x1",
+    bottomLeft
+  );
+
+  bottomCapLeft.setAttribute(
+    "x2",
+    bottomLeft
+  );
+
+  bottomCapLeft.setAttribute(
+    "y1",
+    bottomMeasureY - 12
+  );
+
+  bottomCapLeft.setAttribute(
+    "y2",
+    bottomMeasureY + 12
+  );
+
+
+  bottomCapRight.setAttribute(
+    "x1",
+    bottomRight
+  );
+
+  bottomCapRight.setAttribute(
+    "x2",
+    bottomRight
+  );
+
+  bottomCapRight.setAttribute(
+    "y1",
+    bottomMeasureY - 12
+  );
+
+  bottomCapRight.setAttribute(
+    "y2",
+    bottomMeasureY + 12
+  );
+
+
+  bottomLabel.setAttribute(
+    "y",
+    bottomMeasureY - 17
+  );
+
+
+  bottomValue.setAttribute(
+    "y",
+    bottomMeasureY + 30
+  );
+
+
+  /*
+    Height measurement.
+  */
+
+  heightLine.setAttribute(
+    "y2",
+    finalBottomY
+  );
+
+
+  heightCapBottom.setAttribute(
+    "y1",
+    finalBottomY
+  );
+
+  heightCapBottom.setAttribute(
+    "y2",
+    finalBottomY
+  );
+
+
+  /*
+    Values shown on drawing.
+  */
+
+  topValue.textContent =
+    top && top > 0
+      ? `${top} cm`
+      : "—";
+
+
+  bottomValue.textContent =
+    bottom && bottom > 0
+      ? `${bottom} cm`
+      : "—";
+
+
+  heightValue.textContent =
+    height && height > 0
+      ? `${height} cm`
+      : "—";
+
+
+  /*
+    Adjust milk surface to top width.
+  */
+
+  milkSurface.setAttribute(
+    "rx",
+    Math.max(
+      topHalf - 5,
+      30
+    )
+  );
+
+}
+
+
+/* =========================================================
+   ACTIVE MEASUREMENT HIGHLIGHTING
+========================================================= */
+
+function clearHighlights() {
+
+  [
+    topLine,
+    bottomLine,
+    heightLine
+  ]
+  .forEach(element => {
+
+    element.classList.remove(
+      "active-measurement"
+    );
+
+  });
+
+
+  [
+    topLabel,
+    bottomLabel,
+    heightLabel
+  ]
+  .forEach(element => {
+
+    element.classList.remove(
+      "active-label"
+    );
+
+  });
+
+}
+
+
+function highlightTop() {
+
+  clearHighlights();
+
+  topLine.classList.add(
+    "active-measurement"
+  );
+
+  topLabel.classList.add(
+    "active-label"
+  );
+
+  stepBubble.textContent =
+    "📏 Measure straight across the top opening.";
+
+}
+
+
+function highlightBottom() {
+
+  clearHighlights();
+
+  bottomLine.classList.add(
+    "active-measurement"
+  );
+
+  bottomLabel.classList.add(
+    "active-label"
+  );
+
+  stepBubble.textContent =
+    "📏 Now measure straight across the bottom.";
+
+}
+
+
+function highlightHeight() {
+
+  clearHighlights();
+
+  heightLine.classList.add(
+    "active-measurement"
+  );
+
+  heightLabel.classList.add(
+    "active-label"
+  );
+
+  stepBubble.textContent =
+    "⬆️ Measure straight upward — not along the sloped wall.";
+
+}
+
+
+/* =========================================================
+   INPUT EVENTS
+========================================================= */
+
+topInput.addEventListener(
+  "focus",
+  highlightTop
+);
+
+
+bottomInput.addEventListener(
+  "focus",
+  highlightBottom
+);
+
+
+heightInput.addEventListener(
+  "focus",
+  highlightHeight
+);
+
+
+[
+  topInput,
+  bottomInput,
+  heightInput
+]
+.forEach(input => {
+
+  input.addEventListener(
+    "input",
+    () => {
+
+      updateShape();
+
+      /*
+        Reset liquid if dimensions change.
+      */
+
+      milkGroup.classList.remove(
+        "filled"
+      );
+
+      resultCard.classList.remove(
+        "show"
+      );
+
+    }
+  );
+
+});
+
+
+/* =========================================================
+   CALCULATION
+========================================================= */
+
+function calculateVolume() {
+
+  const top =
+    getNumber(topInput);
+
+  const bottom =
+    getNumber(bottomInput);
+
+  const height =
+    getNumber(heightInput);
+
+
+  if (
+    !top ||
+    !bottom ||
+    !height ||
+    top <= 0 ||
+    bottom <= 0 ||
+    height <= 0
+  ) {
+
+    errorBox.classList.add(
+      "show"
+    );
+
+    resultCard.classList.remove(
+      "show"
+    );
+
+    return;
+
+  }
+
+
+  errorBox.classList.remove(
+    "show"
+  );
+
+
+  /*
+    CONICAL FRUSTUM FORMULA
+
+    Using diameters directly:
+
+              π × h
+    V = ---------------- ×
+             12
+
+        (D₁² + D₁D₂ + D₂²)
+
+  */
+
+
+  const cubicCentimetres =
+
+    (
+      Math.PI *
+      height *
+      (
+        bottom * bottom
+        +
+        bottom * top
+        +
+        top * top
+      )
+    )
+
+    /
+
+    12;
+
+
+  /*
+    1000 cm³ = 1 litre
+  */
+
+  const litres =
+    cubicCentimetres /
+    1000;
+
+
+  /*
+    Friendly display precision.
+  */
+
+  let litreDisplay;
+
+
+  if (litres >= 1000) {
+
+    litreDisplay =
+      litres.toFixed(0);
+
+  }
+
+  else if (litres >= 100) {
+
+    litreDisplay =
+      litres.toFixed(1);
+
+  }
+
+  else {
+
+    litreDisplay =
+      litres.toFixed(2);
+
+  }
+
+
+  document.getElementById(
+    "litreValue"
+  ).textContent =
+    litreDisplay;
+
+
+  document.getElementById(
+    "cmValue"
+  ).textContent =
+
+    cubicCentimetres
+      .toLocaleString(
+        undefined,
+        {
+          maximumFractionDigits: 0
+        }
+      );
+
+
+  document.getElementById(
+    "friendlyResult"
+  ).textContent =
+
+    `This container can hold approximately ${litreDisplay} litres.`;
+
+
+  /*
+    Show result.
+  */
+
+  resultCard.classList.add(
+    "show"
+  );
+
+
+  /*
+    Fill container with milk.
+  */
+
+  milkGroup.classList.remove(
+    "filled"
+  );
+
+
+  /*
+    Force browser to register
+    reset before animation.
+  */
+
+  void milkGroup.offsetWidth;
+
+
+  milkGroup.classList.add(
+    "filled"
+  );
+
+
+  clearHighlights();
+
+
+  stepBubble.textContent =
+    `🥛 About ${litreDisplay} litres!`;
+
+
+  /*
+    On phones, bring result
+    into view.
+
+    PC users usually already
+    see everything.
+  */
+
+  if (
+    window.innerWidth < 850
+  ) {
+
+    setTimeout(
+      () => {
+
+        resultCard.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+      },
+      450
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   BUTTON EVENTS
+========================================================= */
+
+calculateButton.addEventListener(
+  "click",
+  calculateVolume
+);
+
+
+exampleButton.addEventListener(
+  "click",
+  () => {
+
+    topInput.value = 30;
+
+    bottomInput.value = 45;
+
+    heightInput.value = 50;
+
+
+    updateShape();
+
+    calculateVolume();
+
+  }
+);
+
+
+resetButton.addEventListener(
+  "click",
+  () => {
+
+    topInput.value = "";
+
+    bottomInput.value = "";
+
+    heightInput.value = "";
+
+
+    errorBox.classList.remove(
+      "show"
+    );
+
+
+    resultCard.classList.remove(
+      "show"
+    );
+
+
+    milkGroup.classList.remove(
+      "filled"
+    );
+
+
+    clearHighlights();
+
+
+    stepBubble.textContent =
+      "👆 Start with the top diameter.";
+
+
+    updateShape();
+
+
+    topInput.focus();
+
+  }
+);
+
+
+/* =========================================================
+   ENTER KEY
+========================================================= */
+
+[
+  topInput,
+  bottomInput,
+  heightInput
+]
+.forEach(input => {
+
+  input.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        calculateVolume();
+
+      }
+
+    }
+  );
+
+});
+
+
+/* =========================================================
+   INITIAL DRAWING
+========================================================= */
+
+updateShape();
+
+</script>
+
+</body>
+</html>
