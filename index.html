@@ -13,10 +13,6 @@
 <title>Container Volume Calculator</title>
 
 <style>
-/* ========================================================
-   BASIC THEME
-========================================================= */
-
 * {
   box-sizing: border-box;
 }
@@ -64,7 +60,7 @@ body {
     radial-gradient(
       circle at top,
       #ffffff 0,
-      #f3f7fc 40%,
+      #f3f7fc 42%,
       #edf3fa 100%
     );
 
@@ -73,13 +69,12 @@ body {
   min-height: 100vh;
 }
 
-
-/* =========================================================
-   MAIN LAYOUT
-========================================================= */
+body.modal-open {
+  overflow: hidden;
+}
 
 .app {
-  width: min(1150px, 100%);
+  width: min(900px, 100%);
   margin: auto;
 
   padding:
@@ -88,52 +83,102 @@ body {
     45px;
 }
 
+/* =========================================================
+   HEADER
+========================================================= */
 
 header {
   text-align: center;
-  padding: 8px 8px 20px;
+  padding: 5px 5px 18px;
 }
 
-
-.logo {
+.formula-banner {
   display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  gap: 9px;
+
+  gap: 8px;
+
+  max-width: 100%;
+
+  padding: 10px 16px;
+
+  border-radius: 999px;
 
   background: var(--primary-light);
 
   color: var(--primary-dark);
 
-  padding: 9px 15px;
-
-  border-radius: 999px;
-
-  font-size: 0.96rem;
   font-weight: 800;
 }
 
+.formula-label {
+  font-size: 0.9rem;
+}
+
+.formula {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 1.08rem;
+}
+
+.fraction {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+
+  line-height: 1;
+}
+
+.fraction-top {
+  padding: 0 4px 3px;
+
+  border-bottom:
+    1.5px solid
+    currentColor;
+}
+
+.fraction-bottom {
+  padding-top: 3px;
+}
+
+.formula-legend {
+  margin-top: 8px;
+
+  color: var(--muted);
+
+  font-size: 0.82rem;
+}
 
 header h1 {
   margin:
-    15px
+    17px
     auto
     9px;
 
-  max-width: 750px;
+  max-width: 700px;
 
   font-size:
     clamp(
       2rem,
       7vw,
-      3.5rem
+      3.4rem
     );
 
   line-height: 1.05;
 }
 
-
 header p {
-  max-width: 680px;
+  max-width: 640px;
   margin: auto;
 
   color: var(--muted);
@@ -142,65 +187,52 @@ header p {
     clamp(
       1rem,
       3vw,
-      1.2rem
+      1.16rem
     );
 
-  line-height: 1.55;
+  line-height: 1.5;
 }
-
-
-.main-grid {
-  display: grid;
-  gap: 18px;
-}
-
 
 /* =========================================================
-   CARDS
+   CARD
 ========================================================= */
 
 .card {
-  background: rgba(255,255,255,0.94);
+  background: rgba(255,255,255,0.95);
 
-  border: 1px solid rgba(217,226,236,0.8);
+  border:
+    1px solid
+    rgba(217,226,236,0.85);
 
   border-radius: 25px;
 
-  padding: 20px;
+  padding: 18px;
 
   box-shadow: var(--shadow);
-
-  backdrop-filter: blur(7px);
 }
 
+.visual-title {
+  text-align: center;
 
-.card-title {
   margin: 0 0 5px;
 
   font-size: 1.25rem;
-  font-weight: 850;
+  font-weight: 900;
 }
 
+.visual-subtitle {
+  text-align: center;
 
-.card-subtitle {
-  margin: 0 0 18px;
+  margin: 0 0 14px;
 
   color: var(--muted);
 
-  line-height: 1.5;
-
-  font-size: 0.98rem;
+  line-height: 1.45;
 }
-
 
 /* =========================================================
-   CONTAINER DRAWING AREA
+   VISUAL
 ========================================================= */
-
-.visual-card {
-  overflow: hidden;
-}
-
 
 .visual-wrapper {
   position: relative;
@@ -221,11 +253,10 @@ header p {
     radial-gradient(
       circle at center,
       #ffffff 0%,
-      #f6faff 60%,
+      #f7fbff 60%,
       #eef5fd 100%
     );
 }
-
 
 .visual-wrapper::before {
   content: "";
@@ -237,13 +268,17 @@ header p {
 
   border-radius: 50%;
 
-  background: rgba(23,105,224,0.05);
+  background:
+    rgba(23,105,224,0.05);
 
   filter: blur(10px);
 
-  animation: glow 4s ease-in-out infinite;
+  animation:
+    glow
+    4s
+    ease-in-out
+    infinite;
 }
-
 
 @keyframes glow {
   0%, 100% {
@@ -257,7 +292,6 @@ header p {
   }
 }
 
-
 svg {
   position: relative;
   z-index: 2;
@@ -268,21 +302,19 @@ svg {
   height: auto;
 }
 
-
-/* =========================================================
-   SVG STYLING
-========================================================= */
-
 .container-shell {
-  fill: rgba(204,230,255,0.35);
+  fill:
+    rgba(204,230,255,0.35);
 
   stroke: #385b84;
 
   stroke-width: 4;
 
   stroke-linejoin: round;
-}
 
+  transition:
+    0.25s ease;
+}
 
 .container-top {
   fill: #eef7ff;
@@ -290,8 +322,10 @@ svg {
   stroke: #385b84;
 
   stroke-width: 4;
-}
 
+  transition:
+    0.25s ease;
+}
 
 .container-bottom {
   fill: none;
@@ -299,8 +333,10 @@ svg {
   stroke: #385b84;
 
   stroke-width: 4;
-}
 
+  transition:
+    0.25s ease;
+}
 
 .dimension-line {
   stroke: #76869a;
@@ -309,42 +345,41 @@ svg {
 
   stroke-linecap: round;
 
-  transition: 0.25s ease;
+  transition:
+    0.25s ease;
 }
-
 
 .dimension-cap {
   stroke: #76869a;
 
   stroke-width: 3;
 
-  transition: 0.25s ease;
+  transition:
+    0.25s ease;
 }
-
 
 .dimension-text {
   fill: #647287;
 
   font-size: 17px;
 
-  font-weight: 800;
+  font-weight: 900;
 
   text-anchor: middle;
 
-  transition: 0.25s ease;
+  transition:
+    0.25s ease;
 }
-
 
 .dimension-value {
   fill: var(--primary);
 
   font-size: 16px;
 
-  font-weight: 900;
+  font-weight: 950;
 
   text-anchor: middle;
 }
-
 
 .active-measurement {
   stroke: var(--primary);
@@ -358,16 +393,16 @@ svg {
     );
 }
 
-
 .active-label {
   fill: var(--primary);
 
   transform-box: fill-box;
   transform-origin: center;
 
-  animation: labelPulse 0.7s ease;
+  animation:
+    labelPulse
+    0.7s ease;
 }
-
 
 @keyframes labelPulse {
   0% {
@@ -375,7 +410,7 @@ svg {
   }
 
   50% {
-    transform: scale(1.13);
+    transform: scale(1.14);
   }
 
   100% {
@@ -383,9 +418,16 @@ svg {
   }
 }
 
+.measurement-click {
+  fill: transparent;
+  cursor: pointer;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
 
 /* =========================================================
-   LIQUID
+   MILK
 ========================================================= */
 
 .milk {
@@ -394,17 +436,15 @@ svg {
   opacity: 0.92;
 }
 
-
-.milk-surface {
-  fill: #fff9df;
-
-  stroke: var(--milk-dark);
-
-  stroke-width: 2;
-
-  opacity: 0;
+.milk-shine {
+  fill:
+    rgba(
+      255,
+      255,
+      255,
+      0.42
+    );
 }
-
 
 .milk-fill-group {
   transform-origin: bottom center;
@@ -413,26 +453,19 @@ svg {
 
   transition:
     transform
-    1.6s
+    1.5s
     cubic-bezier(.2,.8,.2,1);
 }
-
 
 .milk-fill-group.filled {
   transform: scaleY(1);
 }
 
-
-.milk-shine {
-  fill: rgba(255,255,255,0.42);
-}
-
-
 /* =========================================================
-   STEP MESSAGE
+   STATUS
 ========================================================= */
 
-.step-bubble {
+.tap-message {
   margin-top: 13px;
 
   min-height: 60px;
@@ -451,181 +484,27 @@ svg {
 
   padding: 13px 15px;
 
-  font-weight: 800;
+  font-weight: 850;
 
   line-height: 1.4;
-
-  transition: 0.25s ease;
 }
-
 
 /* =========================================================
-   INPUTS
+   CONTROLS
 ========================================================= */
 
-.fields {
+.controls {
   display: grid;
-  gap: 16px;
-}
 
-
-.field {
-  border: 2px solid var(--border);
-
-  border-radius: 19px;
-
-  padding: 15px;
-
-  background: #fff;
-
-  transition:
-    0.2s ease;
-}
-
-
-.field:focus-within {
-  border-color: var(--primary);
-
-  box-shadow:
-    0 0 0 5px
-    var(--primary-light);
-
-  transform: translateY(-2px);
-}
-
-
-.field label {
-  display: flex;
-  align-items: center;
   gap: 10px;
 
-  margin-bottom: 6px;
-
-  font-size: 1.08rem;
-
-  font-weight: 850;
+  margin-top: 14px;
 }
-
-
-.number-badge {
-  display: inline-flex;
-
-  justify-content: center;
-  align-items: center;
-
-  width: 30px;
-  height: 30px;
-
-  flex: 0 0 auto;
-
-  border-radius: 50%;
-
-  background: var(--primary);
-
-  color: white;
-
-  font-size: 0.93rem;
-}
-
-
-.hint {
-  color: var(--muted);
-
-  margin:
-    0
-    0
-    10px
-    40px;
-
-  font-size: 0.91rem;
-
-  line-height: 1.4;
-}
-
-
-.input-row {
-  display: flex;
-
-  border-radius: 14px;
-
-  overflow: hidden;
-
-  border: 2px solid var(--border);
-
-  background: white;
-}
-
-
-.input-row:focus-within {
-  border-color: var(--primary);
-}
-
-
-input {
-  flex: 1;
-
-  width: 100%;
-
-  min-width: 0;
-
-  border: none;
-
-  outline: none;
-
-  padding:
-    15px
-    14px;
-
-  font-size: 1.5rem;
-
-  font-weight: 800;
-
-  color: var(--text);
-
-  background: white;
-}
-
-
-.unit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  min-width: 70px;
-
-  padding: 0 14px;
-
-  background: #f5f8fc;
-
-  color: var(--muted);
-
-  font-size: 1.05rem;
-
-  font-weight: 900;
-
-  border-left:
-    2px solid
-    var(--border);
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.buttons {
-  display: grid;
-
-  gap: 11px;
-
-  margin-top: 18px;
-}
-
 
 button {
   width: 100%;
 
-  min-height: 62px;
+  min-height: 60px;
 
   border: none;
 
@@ -635,7 +514,7 @@ button {
 
   font: inherit;
 
-  font-size: 1.13rem;
+  font-size: 1.12rem;
 
   font-weight: 900;
 
@@ -643,15 +522,12 @@ button {
 
   transition:
     transform 0.12s ease,
-    box-shadow 0.12s ease,
-    opacity 0.12s ease;
+    box-shadow 0.12s ease;
 }
-
 
 button:active {
   transform: scale(0.98);
 }
-
 
 .calculate {
   background:
@@ -668,20 +544,11 @@ button:active {
     rgba(23,105,224,0.25);
 }
 
-
-.calculate:hover {
-  box-shadow:
-    0 13px 30px
-    rgba(23,105,224,0.34);
-}
-
-
 .example {
   background: var(--primary-light);
 
   color: var(--primary-dark);
 }
-
 
 .reset {
   background: #edf1f5;
@@ -689,49 +556,26 @@ button:active {
   color: #445166;
 }
 
-
 /* =========================================================
-   ERROR
+   RESULT
 ========================================================= */
 
-.error {
+.result {
   display: none;
 
-  margin-top: 15px;
-
-  padding: 14px 16px;
-
-  border-radius: 15px;
-
-  background: var(--danger-light);
-
-  color: var(--danger);
-
-  font-weight: 750;
-
-  line-height: 1.45;
-}
-
-
-.error.show {
-  display: block;
-}
-
-
-/* =========================================================
-   RESULT CARD
-========================================================= */
-
-.result-card {
-  display: none;
+  margin-top: 16px;
 
   text-align: center;
+
+  border-radius: 22px;
+
+  padding: 18px;
 
   background:
     linear-gradient(
       145deg,
       #ffffff,
-      #f1fff7
+      #effff6
     );
 
   border:
@@ -739,51 +583,40 @@ button:active {
     #cfeedd;
 }
 
-
-.result-card.show {
+.result.show {
   display: block;
 
   animation:
     resultAppear
-    0.55s ease;
+    0.45s ease;
 }
-
 
 @keyframes resultAppear {
   from {
     opacity: 0;
+
     transform:
-      translateY(20px)
-      scale(0.97);
+      translateY(12px)
+      scale(0.98);
   }
 
   to {
     opacity: 1;
+
     transform:
       translateY(0)
       scale(1);
   }
 }
 
-
-.result-icon {
-  font-size: 2.4rem;
-}
-
-
-.result-title {
+.result-label {
   color: var(--muted);
 
-  font-size: 1.05rem;
-
-  font-weight: 800;
-
-  margin-top: 4px;
+  font-weight: 850;
 }
 
-
 .litres {
-  margin: 12px 0;
+  margin: 8px 0;
 
   color: var(--success);
 
@@ -791,7 +624,7 @@ button:active {
     clamp(
       3.3rem,
       14vw,
-      6rem
+      5.5rem
     );
 
   font-weight: 950;
@@ -799,94 +632,321 @@ button:active {
   line-height: 1;
 }
 
-
 .litres small {
   font-size: 0.37em;
 }
 
-
-.friendly-result {
-  max-width: 600px;
-
-  margin: auto;
-
+.result-message {
   background: var(--success-light);
-
-  border-radius: 17px;
-
-  padding: 14px;
 
   color: #075c36;
 
-  font-size: 1.1rem;
+  padding: 13px;
+
+  border-radius: 15px;
 
   font-weight: 800;
-
-  line-height: 1.45;
 }
 
-
 .result-details {
-  margin-top: 15px;
+  margin-top: 10px;
 
   color: var(--muted);
 
-  font-size: 0.96rem;
-
-  line-height: 1.6;
+  font-size: 0.94rem;
 }
 
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: none;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 18px;
+
+  background:
+    rgba(
+      10,
+      25,
+      45,
+      0.55
+    );
+
+  backdrop-filter:
+    blur(7px);
+}
+
+.modal-overlay.show {
+  display: flex;
+
+  animation:
+    modalFade
+    0.2s ease;
+}
+
+@keyframes modalFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  width: min(430px, 100%);
+
+  background: white;
+
+  border-radius: 24px;
+
+  padding: 22px;
+
+  box-shadow:
+    0 25px 80px
+    rgba(0,0,0,0.25);
+
+  animation:
+    modalPop
+    0.25s ease;
+}
+
+@keyframes modalPop {
+  from {
+    transform:
+      translateY(15px)
+      scale(0.96);
+
+    opacity: 0;
+  }
+
+  to {
+    transform:
+      translateY(0)
+      scale(1);
+
+    opacity: 1;
+  }
+}
+
+.modal-measurement {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding:
+    7px
+    11px;
+
+  border-radius: 999px;
+
+  background:
+    var(--primary-light);
+
+  color:
+    var(--primary-dark);
+
+  font-size: 0.85rem;
+
+  font-weight: 900;
+}
+
+.modal h2 {
+  margin:
+    13px
+    0
+    7px;
+
+  font-size:
+    1.6rem;
+}
+
+.modal-description {
+  margin:
+    0
+    0
+    17px;
+
+  color:
+    var(--muted);
+
+  line-height:
+    1.5;
+}
+
+.modal-input-wrap {
+  display: flex;
+
+  overflow: hidden;
+
+  border:
+    3px solid
+    var(--primary);
+
+  border-radius: 17px;
+
+  box-shadow:
+    0 0 0 5px
+    var(--primary-light);
+}
+
+.modal input {
+  width: 100%;
+
+  min-width: 0;
+
+  border: none;
+
+  outline: none;
+
+  padding:
+    17px
+    15px;
+
+  font-size:
+    2rem;
+
+  font-weight: 950;
+
+  color:
+    var(--text);
+
+  background:
+    white;
+
+  text-align:
+    center;
+}
+
+.modal-unit {
+  min-width:
+    72px;
+
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+  align-items:
+    center;
+
+  background:
+    #f4f7fb;
+
+  border-left:
+    2px solid
+    var(--border);
+
+  color:
+    var(--muted);
+
+  font-size:
+    1.1rem;
+
+  font-weight:
+    900;
+}
+
+.modal-buttons {
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr
+    1.5fr;
+
+  gap:
+    10px;
+
+  margin-top:
+    19px;
+}
+
+.modal-cancel {
+  background:
+    #edf1f5;
+
+  color:
+    #445166;
+}
+
+.modal-save {
+  background:
+    var(--primary);
+
+  color:
+    white;
+}
+
+.error-text {
+  min-height:
+    24px;
+
+  margin-top:
+    10px;
+
+  color:
+    var(--danger);
+
+  font-size:
+    0.92rem;
+
+  font-weight:
+    800;
+
+  text-align:
+    center;
+}
 
 /* =========================================================
    FOOTER
 ========================================================= */
 
 footer {
-  max-width: 700px;
+  max-width:
+    650px;
 
   margin:
-    25px
+    24px
     auto
     0;
 
-  text-align: center;
+  text-align:
+    center;
 
-  color: var(--muted);
+  color:
+    var(--muted);
 
-  font-size: 0.9rem;
+  font-size:
+    0.9rem;
 
-  line-height: 1.5;
+  line-height:
+    1.5;
 }
 
-
 /* =========================================================
-   PC / TABLET
+   DESKTOP
 ========================================================= */
 
-@media (min-width: 850px) {
-
-  .app {
-    padding-top: 28px;
-  }
-
-  .main-grid {
-    grid-template-columns:
-      minmax(0, 1.05fr)
-      minmax(380px, 0.95fr);
-
-    align-items: start;
-  }
-
-  .visual-card {
-    position: sticky;
-    top: 20px;
-  }
+@media (min-width: 700px) {
 
   .visual-wrapper {
-    min-height: 570px;
+    min-height: 560px;
   }
 
-  .buttons {
+  .controls {
     grid-template-columns:
       2fr
       1fr
@@ -895,28 +955,36 @@ footer {
 
 }
 
-
 /* =========================================================
-   VERY SMALL PHONES
+   SMALL PHONE
 ========================================================= */
 
-@media (max-width: 370px) {
+@media (max-width: 390px) {
+
+  .app {
+    padding-left:
+      9px;
+
+    padding-right:
+      9px;
+  }
 
   .card {
-    padding: 15px;
-    border-radius: 20px;
+    padding:
+      13px;
   }
 
   .visual-wrapper {
-    min-height: 340px;
+    min-height:
+      350px;
   }
 
-  .hint {
-    margin-left: 0;
+  .formula-banner {
+    border-radius:
+      18px;
   }
 
 }
-
 
 /* =========================================================
    ACCESSIBILITY
@@ -927,8 +995,11 @@ footer {
   *,
   *::before,
   *::after {
-    animation: none !important;
-    transition: none !important;
+    animation:
+      none !important;
+
+    transition:
+      none !important;
   }
 
 }
@@ -942,38 +1013,63 @@ footer {
 
 <header>
 
-  <div class="logo">
-    🥛 Simple Volume Helper
+  <div class="formula-banner">
+
+    <span class="formula-label">
+      Calculating:
+    </span>
+
+    <span class="formula">
+
+      V =
+
+      <span class="fraction">
+
+        <span class="fraction-top">
+          πh
+        </span>
+
+        <span class="fraction-bottom">
+          12
+        </span>
+
+      </span>
+
+      (D² + Dd + d²)
+
+    </span>
+
   </div>
 
-  <h1>
-    How Many Litres Does It Hold?
-  </h1>
+
+  <div class="formula-legend">
+
+  
+  </div>
+
+
+  <h3>
+   لعيونك
+  </h3>
+
 
   <p>
-    Enter just three simple measurements.
-    The container drawing changes with your numbers
-    and calculates the capacity for you.
+    Tap a measurement directly on the container.
+    Enter the number, save it, and the drawing updates.
   </p>
 
 </header>
 
 
-<div class="main-grid">
 
+<section class="card">
 
-<!-- =====================================================
-     LEFT / TOP: VISUAL
-===================================================== -->
-
-<section class="card visual-card">
-
-  <h2 class="card-title">
+  <h2 class="visual-title">
     Your Container
   </h2>
 
-  <p class="card-subtitle">
-    Watch the drawing change as you enter the measurements.
+  <p class="visual-subtitle">
+    Tap the blue measurement you want to enter.
   </p>
 
 
@@ -981,8 +1077,14 @@ footer {
 
     <svg
       viewBox="0 0 560 520"
+
       role="img"
-      aria-label="Animated conical container showing top diameter, bottom diameter and vertical height"
+
+      aria-label="
+        Interactive container with top diameter,
+        bottom diameter,
+        and vertical height
+      "
     >
 
       <defs>
@@ -991,6 +1093,7 @@ footer {
 
           <path
             id="clipShape"
+
             d="
               M180 120
               Q280 92 380 120
@@ -1005,12 +1108,12 @@ footer {
       </defs>
 
 
-      <!-- SHADOW -->
-
       <ellipse
         id="shadow"
+
         cx="280"
         cy="430"
+
         rx="155"
         ry="18"
 
@@ -1018,32 +1121,24 @@ footer {
       />
 
 
-      <!-- MILK / LIQUID -->
-
       <g
         id="milkGroup"
+
         class="milk-fill-group"
-        clip-path="url(#containerClip)"
+
+        clip-path="
+          url(#containerClip)
+        "
       >
 
         <rect
-          id="milkRect"
           class="milk"
+
           x="80"
           y="110"
+
           width="400"
           height="310"
-        />
-
-        <ellipse
-          id="milkSurface"
-          class="milk-surface"
-
-          cx="280"
-          cy="130"
-
-          rx="100"
-          ry="20"
         />
 
         <path
@@ -1061,8 +1156,6 @@ footer {
       </g>
 
 
-      <!-- CONTAINER BODY -->
-
       <path
         id="containerBody"
 
@@ -1078,8 +1171,6 @@ footer {
       />
 
 
-      <!-- TOP ELLIPSE -->
-
       <ellipse
         id="topEllipse"
 
@@ -1093,8 +1184,6 @@ footer {
       />
 
 
-      <!-- BOTTOM CURVE -->
-
       <path
         id="bottomCurve"
 
@@ -1107,14 +1196,15 @@ footer {
       />
 
 
-      <!-- =================================================
-           TOP DIAMETER
-      ================================================= -->
+      <!-- TOP DIAMETER -->
 
       <line
         id="topLine"
 
-        class="dimension-line"
+        class="
+          dimension-line
+          active-measurement
+        "
 
         x1="180"
         y1="68"
@@ -1147,18 +1237,19 @@ footer {
         y2="80"
       />
 
-
       <text
         id="topLabel"
 
-        class="dimension-text"
+        class="
+          dimension-text
+          active-label
+        "
 
         x="280"
-        y="45"
+        y="44"
       >
-        TOP DIAMETER
+        TOP DIAMETER (d)
       </text>
-
 
       <text
         id="topValue"
@@ -1168,13 +1259,11 @@ footer {
         x="280"
         y="94"
       >
-        —
+        TAP TO ENTER
       </text>
 
 
-      <!-- =================================================
-           HEIGHT
-      ================================================= -->
+      <!-- HEIGHT -->
 
       <line
         id="heightLine"
@@ -1212,50 +1301,46 @@ footer {
         y2="400"
       />
 
-
       <text
         id="heightLabel"
 
         class="dimension-text"
 
-        x="467"
+        x="465"
         y="265"
 
         transform="
           rotate(
             -90
-            467
+            465
             265
           )
         "
       >
-        VERTICAL HEIGHT
+        VERTICAL HEIGHT (h)
       </text>
-
 
       <text
         id="heightValue"
 
         class="dimension-value"
 
-        x="520"
+        x="525"
         y="265"
 
         transform="
           rotate(
             -90
-            520
+            525
             265
           )
         "
       >
-        —
+        TAP TO ENTER
       </text>
 
 
-      <!-- =================================================
-           BOTTOM DIAMETER
-      ================================================= -->
+      <!-- BOTTOM DIAMETER -->
 
       <line
         id="bottomLine"
@@ -1293,7 +1378,6 @@ footer {
         y2="487"
       />
 
-
       <text
         id="bottomLabel"
 
@@ -1302,9 +1386,8 @@ footer {
         x="280"
         y="458"
       >
-        BOTTOM DIAMETER
+        BOTTOM DIAMETER (D)
       </text>
-
 
       <text
         id="bottomValue"
@@ -1314,8 +1397,49 @@ footer {
         x="280"
         y="505"
       >
-        —
+        TAP TO ENTER
       </text>
+
+
+      <!-- INVISIBLE LARGE TAP AREAS -->
+
+      <rect
+        id="topClick"
+
+        class="measurement-click"
+
+        x="95"
+        y="10"
+
+        width="370"
+        height="120"
+      />
+
+
+      <rect
+        id="heightClick"
+
+        class="measurement-click"
+
+        x="425"
+        y="90"
+
+        width="130"
+        height="340"
+      />
+
+
+      <rect
+        id="bottomClick"
+
+        class="measurement-click"
+
+        x="65"
+        y="420"
+
+        width="430"
+        height="100"
+      />
 
     </svg>
 
@@ -1323,194 +1447,19 @@ footer {
 
 
   <div
-    id="stepBubble"
-    class="step-bubble"
+    id="tapMessage"
+
+    class="tap-message"
   >
-    👆 Start with the top diameter.
-  </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     RIGHT / BOTTOM: INPUTS
-===================================================== -->
-
-<div>
-
-
-<section class="card">
-
-  <h2 class="card-title">
-    Enter the Measurements
-  </h2>
-
-  <p class="card-subtitle">
-    Use centimetres.
-    Measure straight across or straight upward.
-  </p>
-
-
-  <div class="fields">
-
-
-    <!-- TOP -->
-
-    <div class="field">
-
-      <label for="topDiameter">
-
-        <span class="number-badge">
-          1
-        </span>
-
-        Top Diameter
-
-      </label>
-
-      <div class="hint">
-        Measure straight across the top opening.
-      </div>
-
-
-      <div class="input-row">
-
-        <input
-          id="topDiameter"
-
-          type="number"
-
-          inputmode="decimal"
-
-          step="any"
-
-          min="0"
-
-          placeholder="Example: 30"
-
-          autocomplete="off"
-        >
-
-        <span class="unit">
-          cm
-        </span>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- BOTTOM -->
-
-    <div class="field">
-
-      <label for="bottomDiameter">
-
-        <span class="number-badge">
-          2
-        </span>
-
-        Bottom Diameter
-
-      </label>
-
-      <div class="hint">
-        Measure straight across the bottom.
-      </div>
-
-
-      <div class="input-row">
-
-        <input
-          id="bottomDiameter"
-
-          type="number"
-
-          inputmode="decimal"
-
-          step="any"
-
-          min="0"
-
-          placeholder="Example: 45"
-
-          autocomplete="off"
-        >
-
-        <span class="unit">
-          cm
-        </span>
-
-      </div>
-
-    </div>
-
-
-
-    <!-- HEIGHT -->
-
-    <div class="field">
-
-      <label for="height">
-
-        <span class="number-badge">
-          3
-        </span>
-
-        Vertical Height
-
-      </label>
-
-      <div class="hint">
-        Measure straight upward.
-        Do not measure along the sloped wall.
-      </div>
-
-
-      <div class="input-row">
-
-        <input
-          id="height"
-
-          type="number"
-
-          inputmode="decimal"
-
-          step="any"
-
-          min="0"
-
-          placeholder="Example: 50"
-
-          autocomplete="off"
-        >
-
-        <span class="unit">
-          cm
-        </span>
-
-      </div>
-
-    </div>
-
-
+    👆 Tap Top Diameter, Bottom Diameter, or Vertical Height.
   </div>
 
 
-  <div
-    id="error"
-    class="error"
-  >
-    Please enter all three measurements using numbers greater than zero.
-  </div>
-
-
-  <div class="buttons">
+  <div class="controls">
 
     <button
       id="calculateButton"
+
       class="calculate"
     >
       🥛 Calculate Litres
@@ -1519,6 +1468,7 @@ footer {
 
     <button
       id="exampleButton"
+
       class="example"
     >
       Try Example
@@ -1527,6 +1477,7 @@ footer {
 
     <button
       id="resetButton"
+
       class="reset"
     >
       Reset
@@ -1534,630 +1485,346 @@ footer {
 
   </div>
 
-</section>
-
-
-
-<!-- =====================================================
-     RESULT
-===================================================== -->
-
-<section
-  id="resultCard"
-
-  class="card result-card"
-
-  aria-live="polite"
->
-
-  <div class="result-icon">
-    🥛
-  </div>
-
-
-  <div class="result-title">
-    Approximate Capacity
-  </div>
-
-
-  <div class="litres">
-
-    <span id="litreValue">
-      0
-    </span>
-
-    <small>
-      L
-    </small>
-
-  </div>
-
 
   <div
-    id="friendlyResult"
-    class="friendly-result"
+    id="result"
+
+    class="result"
+
+    aria-live="polite"
   >
-  </div>
+
+    <div class="result-label">
+      Approximate Capacity
+    </div>
 
 
-  <div class="result-details">
+    <div class="litres">
 
-    <div>
+      <span id="litreValue">
+        0
+      </span>
+
+      <small>
+        L
+      </small>
+
+    </div>
+
+
+    <div
+      id="resultMessage"
+
+      class="result-message"
+    >
+    </div>
+
+
+    <div class="result-details">
+
       Volume:
+
       <strong id="cmValue">
         0
       </strong>
-      cm³
-    </div>
 
-    <div>
-      1 litre = 1,000 cm³
+      cm³
+
     </div>
 
   </div>
 
 </section>
 
-
-</div>
-
-</div>
 
 
 <footer>
 
-  Designed for containers with a circular top,
-  circular bottom, centered shape,
-  and evenly sloped sides.
+  Measure the inside of the container
+  when calculating liquid capacity.
 
   <br><br>
 
-  Measurements should be taken from the
-  <strong>inside</strong> of the container
-  when calculating how much liquid it can hold.
+  Vertical height means straight upward,
+  not along the sloped wall.
 
 </footer>
 
-
 </main>
+
+
+
+<!-- =====================================================
+     INPUT MODAL
+===================================================== -->
+
+<div
+  id="modalOverlay"
+
+  class="modal-overlay"
+
+  aria-hidden="true"
+>
+
+  <div
+    class="modal"
+
+    role="dialog"
+
+    aria-modal="true"
+
+    aria-labelledby="modalTitle"
+  >
+
+    <div
+      id="modalBadge"
+
+      class="modal-measurement"
+    >
+      Measurement
+    </div>
+
+
+    <h2 id="modalTitle">
+      Enter Measurement
+    </h2>
+
+
+    <p
+      id="modalDescription"
+
+      class="modal-description"
+    >
+    </p>
+
+
+    <div class="modal-input-wrap">
+
+      <input
+        id="modalInput"
+
+        type="number"
+
+        inputmode="decimal"
+
+        step="any"
+
+        min="0"
+
+        autocomplete="off"
+
+        placeholder="0"
+      >
+
+
+      <div class="modal-unit">
+        cm
+      </div>
+
+    </div>
+
+
+    <div
+      id="modalError"
+
+      class="error-text"
+    >
+    </div>
+
+
+    <div class="modal-buttons">
+
+      <button
+        id="cancelModal"
+
+        class="modal-cancel"
+      >
+        Cancel
+      </button>
+
+
+      <button
+        id="saveModal"
+
+        class="modal-save"
+      >
+        Save
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 
 
 
 <script>
 
 /* =========================================================
-   INPUT REFERENCES
+   VALUES
 ========================================================= */
 
-const topInput =
-  document.getElementById("topDiameter");
+let topDiameter = null;
+let bottomDiameter = null;
+let verticalHeight = null;
 
-const bottomInput =
-  document.getElementById("bottomDiameter");
-
-const heightInput =
-  document.getElementById("height");
-
-
-const calculateButton =
-  document.getElementById("calculateButton");
-
-const exampleButton =
-  document.getElementById("exampleButton");
-
-const resetButton =
-  document.getElementById("resetButton");
-
-
-const resultCard =
-  document.getElementById("resultCard");
-
-const errorBox =
-  document.getElementById("error");
-
-const stepBubble =
-  document.getElementById("stepBubble");
+let currentMeasurement = null;
 
 
 /* =========================================================
-   SVG REFERENCES
+   REFERENCES
 ========================================================= */
 
-const body =
-  document.getElementById("containerBody");
+const modalOverlay =
+  document.getElementById(
+    "modalOverlay"
+  );
 
-const clipShape =
-  document.getElementById("clipShape");
+const modalInput =
+  document.getElementById(
+    "modalInput"
+  );
 
-const topEllipse =
-  document.getElementById("topEllipse");
+const modalTitle =
+  document.getElementById(
+    "modalTitle"
+  );
 
-const bottomCurve =
-  document.getElementById("bottomCurve");
+const modalBadge =
+  document.getElementById(
+    "modalBadge"
+  );
 
-const shadow =
-  document.getElementById("shadow");
+const modalDescription =
+  document.getElementById(
+    "modalDescription"
+  );
+
+const modalError =
+  document.getElementById(
+    "modalError"
+  );
+
+
+const topValue =
+  document.getElementById(
+    "topValue"
+  );
+
+const bottomValue =
+  document.getElementById(
+    "bottomValue"
+  );
+
+const heightValue =
+  document.getElementById(
+    "heightValue"
+  );
 
 
 const topLine =
-  document.getElementById("topLine");
-
-const topCapLeft =
-  document.getElementById("topCapLeft");
-
-const topCapRight =
-  document.getElementById("topCapRight");
-
-const topLabel =
-  document.getElementById("topLabel");
-
-const topValue =
-  document.getElementById("topValue");
-
+  document.getElementById(
+    "topLine"
+  );
 
 const bottomLine =
-  document.getElementById("bottomLine");
-
-const bottomCapLeft =
-  document.getElementById("bottomCapLeft");
-
-const bottomCapRight =
-  document.getElementById("bottomCapRight");
-
-const bottomLabel =
-  document.getElementById("bottomLabel");
-
-const bottomValue =
-  document.getElementById("bottomValue");
-
+  document.getElementById(
+    "bottomLine"
+  );
 
 const heightLine =
-  document.getElementById("heightLine");
+  document.getElementById(
+    "heightLine"
+  );
 
-const heightCapTop =
-  document.getElementById("heightCapTop");
 
-const heightCapBottom =
-  document.getElementById("heightCapBottom");
+const topLabel =
+  document.getElementById(
+    "topLabel"
+  );
+
+const bottomLabel =
+  document.getElementById(
+    "bottomLabel"
+  );
 
 const heightLabel =
-  document.getElementById("heightLabel");
+  document.getElementById(
+    "heightLabel"
+  );
 
-const heightValue =
-  document.getElementById("heightValue");
+
+const containerBody =
+  document.getElementById(
+    "containerBody"
+  );
+
+const clipShape =
+  document.getElementById(
+    "clipShape"
+  );
+
+const topEllipse =
+  document.getElementById(
+    "topEllipse"
+  );
+
+const bottomCurve =
+  document.getElementById(
+    "bottomCurve"
+  );
+
+const shadow =
+  document.getElementById(
+    "shadow"
+  );
 
 
 const milkGroup =
-  document.getElementById("milkGroup");
+  document.getElementById(
+    "milkGroup"
+  );
 
-const milkSurface =
-  document.getElementById("milkSurface");
+
+const tapMessage =
+  document.getElementById(
+    "tapMessage"
+  );
+
+
+const result =
+  document.getElementById(
+    "result"
+  );
 
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
-function getNumber(input) {
-
-  const value =
-    parseFloat(input.value);
-
-  return Number.isFinite(value)
-    ? value
-    : null;
-
-}
-
-
 function clamp(
   value,
-  min,
-  max
+  minimum,
+  maximum
 ) {
 
   return Math.min(
     Math.max(
       value,
-      min
+      minimum
     ),
-    max
+    maximum
   );
 
 }
 
 
 /* =========================================================
-   LIVE SHAPE UPDATE
+   HIGHLIGHTING
 ========================================================= */
 
-function updateShape() {
-
-  const top =
-    getNumber(topInput);
-
-  const bottom =
-    getNumber(bottomInput);
-
-  const height =
-    getNumber(heightInput);
-
-
-  /*
-    Use sensible visual defaults
-    before the user enters anything.
-  */
-
-  const visualTop =
-    top && top > 0
-      ? top
-      : 30;
-
-  const visualBottom =
-    bottom && bottom > 0
-      ? bottom
-      : 45;
-
-  const visualHeight =
-    height && height > 0
-      ? height
-      : 50;
-
-
-  /*
-    Determine proportions.
-
-    We only use the measurements
-    to DRAW the container.
-
-    The actual calculation later
-    still uses the exact values.
-  */
-
-  const largestDiameter =
-    Math.max(
-      visualTop,
-      visualBottom
-    );
-
-
-  const topRatio =
-    visualTop /
-    largestDiameter;
-
-  const bottomRatio =
-    visualBottom /
-    largestDiameter;
-
-
-  /*
-    Keep the graphic usable even if
-    someone enters extreme numbers.
-  */
-
-  const maxHalfWidth = 150;
-
-  const topHalf =
-    clamp(
-      maxHalfWidth * topRatio,
-      55,
-      150
-    );
-
-  const bottomHalf =
-    clamp(
-      maxHalfWidth * bottomRatio,
-      55,
-      150
-    );
-
-
-  const centerX = 280;
-
-
-  /*
-    Height also changes visually.
-  */
-
-  const visualHeightScale =
-    clamp(
-      visualHeight / 50,
-      0.65,
-      1.25
-    );
-
-
-  const topY = 120;
-
-  const bottomY =
-    topY +
-    280 *
-    visualHeightScale;
-
-
-  /*
-    Limit the drawing.
-  */
-
-  const finalBottomY =
-    clamp(
-      bottomY,
-      300,
-      410
-    );
-
-
-  const topLeft =
-    centerX -
-    topHalf;
-
-  const topRight =
-    centerX +
-    topHalf;
-
-
-  const bottomLeft =
-    centerX -
-    bottomHalf;
-
-  const bottomRight =
-    centerX +
-    bottomHalf;
-
-
-  /*
-    Update the main container shape.
-  */
-
-  const path = `
-    M ${topLeft} ${topY}
-    Q ${centerX} ${topY - 27}
-      ${topRight} ${topY}
-
-    L ${bottomRight} ${finalBottomY}
-
-    Q ${centerX} ${finalBottomY + 38}
-      ${bottomLeft} ${finalBottomY}
-
-    Z
-  `;
-
-
-  body.setAttribute(
-    "d",
-    path
-  );
-
-
-  clipShape.setAttribute(
-    "d",
-    path
-  );
-
-
-  /*
-    Top ellipse.
-  */
-
-  topEllipse.setAttribute(
-    "rx",
-    topHalf
-  );
-
-
-  /*
-    Bottom curve.
-  */
-
-  bottomCurve.setAttribute(
-    "d",
-    `
-    M ${bottomLeft} ${finalBottomY}
-    Q ${centerX} ${finalBottomY + 38}
-      ${bottomRight} ${finalBottomY}
-    `
-  );
-
-
-  /*
-    Shadow.
-  */
-
-  shadow.setAttribute(
-    "cy",
-    finalBottomY + 30
-  );
-
-  shadow.setAttribute(
-    "rx",
-    bottomHalf + 8
-  );
-
-
-  /*
-    Top measurement.
-  */
-
-  topLine.setAttribute(
-    "x1",
-    topLeft
-  );
-
-  topLine.setAttribute(
-    "x2",
-    topRight
-  );
-
-  topCapLeft.setAttribute(
-    "x1",
-    topLeft
-  );
-
-  topCapLeft.setAttribute(
-    "x2",
-    topLeft
-  );
-
-  topCapRight.setAttribute(
-    "x1",
-    topRight
-  );
-
-  topCapRight.setAttribute(
-    "x2",
-    topRight
-  );
-
-
-  /*
-    Bottom measurement.
-  */
-
-  const bottomMeasureY =
-    Math.min(
-      finalBottomY + 75,
-      475
-    );
-
-
-  bottomLine.setAttribute(
-    "x1",
-    bottomLeft
-  );
-
-  bottomLine.setAttribute(
-    "x2",
-    bottomRight
-  );
-
-  bottomLine.setAttribute(
-    "y1",
-    bottomMeasureY
-  );
-
-  bottomLine.setAttribute(
-    "y2",
-    bottomMeasureY
-  );
-
-
-  bottomCapLeft.setAttribute(
-    "x1",
-    bottomLeft
-  );
-
-  bottomCapLeft.setAttribute(
-    "x2",
-    bottomLeft
-  );
-
-  bottomCapLeft.setAttribute(
-    "y1",
-    bottomMeasureY - 12
-  );
-
-  bottomCapLeft.setAttribute(
-    "y2",
-    bottomMeasureY + 12
-  );
-
-
-  bottomCapRight.setAttribute(
-    "x1",
-    bottomRight
-  );
-
-  bottomCapRight.setAttribute(
-    "x2",
-    bottomRight
-  );
-
-  bottomCapRight.setAttribute(
-    "y1",
-    bottomMeasureY - 12
-  );
-
-  bottomCapRight.setAttribute(
-    "y2",
-    bottomMeasureY + 12
-  );
-
-
-  bottomLabel.setAttribute(
-    "y",
-    bottomMeasureY - 17
-  );
-
-
-  bottomValue.setAttribute(
-    "y",
-    bottomMeasureY + 30
-  );
-
-
-  /*
-    Height measurement.
-  */
-
-  heightLine.setAttribute(
-    "y2",
-    finalBottomY
-  );
-
-
-  heightCapBottom.setAttribute(
-    "y1",
-    finalBottomY
-  );
-
-  heightCapBottom.setAttribute(
-    "y2",
-    finalBottomY
-  );
-
-
-  /*
-    Values shown on drawing.
-  */
-
-  topValue.textContent =
-    top && top > 0
-      ? `${top} cm`
-      : "—";
-
-
-  bottomValue.textContent =
-    bottom && bottom > 0
-      ? `${bottom} cm`
-      : "—";
-
-
-  heightValue.textContent =
-    height && height > 0
-      ? `${height} cm`
-      : "—";
-
-
-  /*
-    Adjust milk surface to top width.
-  */
-
-  milkSurface.setAttribute(
-    "rx",
-    Math.max(
-      topHalf - 5,
-      30
-    )
-  );
-
-}
-
-
-/* =========================================================
-   ACTIVE MEASUREMENT HIGHLIGHTING
-========================================================= */
-
-function clearHighlights() {
+function clearHighlight() {
 
   [
     topLine,
@@ -2189,111 +1856,506 @@ function clearHighlights() {
 }
 
 
-function highlightTop() {
+function highlight(type) {
 
-  clearHighlights();
-
-  topLine.classList.add(
-    "active-measurement"
-  );
-
-  topLabel.classList.add(
-    "active-label"
-  );
-
-  stepBubble.textContent =
-    "📏 Measure straight across the top opening.";
-
-}
+  clearHighlight();
 
 
-function highlightBottom() {
+  if (type === "top") {
 
-  clearHighlights();
+    topLine.classList.add(
+      "active-measurement"
+    );
 
-  bottomLine.classList.add(
-    "active-measurement"
-  );
+    topLabel.classList.add(
+      "active-label"
+    );
 
-  bottomLabel.classList.add(
-    "active-label"
-  );
-
-  stepBubble.textContent =
-    "📏 Now measure straight across the bottom.";
-
-}
+  }
 
 
-function highlightHeight() {
+  if (type === "bottom") {
 
-  clearHighlights();
+    bottomLine.classList.add(
+      "active-measurement"
+    );
 
-  heightLine.classList.add(
-    "active-measurement"
-  );
+    bottomLabel.classList.add(
+      "active-label"
+    );
 
-  heightLabel.classList.add(
-    "active-label"
-  );
+  }
 
-  stepBubble.textContent =
-    "⬆️ Measure straight upward — not along the sloped wall.";
+
+  if (type === "height") {
+
+    heightLine.classList.add(
+      "active-measurement"
+    );
+
+    heightLabel.classList.add(
+      "active-label"
+    );
+
+  }
 
 }
 
 
 /* =========================================================
-   INPUT EVENTS
+   MODAL
 ========================================================= */
 
-topInput.addEventListener(
-  "focus",
-  highlightTop
-);
+function openMeasurement(type) {
+
+  currentMeasurement = type;
+
+  modalError.textContent = "";
+
+  highlight(type);
 
 
-bottomInput.addEventListener(
-  "focus",
-  highlightBottom
-);
+  if (type === "top") {
+
+    modalBadge.textContent =
+      "Top Diameter • d";
+
+    modalTitle.textContent =
+      "Enter Top Diameter";
+
+    modalDescription.textContent =
+      "Measure straight across the inside of the top opening.";
+
+    modalInput.value =
+      topDiameter ?? "";
+
+  }
 
 
-heightInput.addEventListener(
-  "focus",
-  highlightHeight
-);
+  if (type === "bottom") {
+
+    modalBadge.textContent =
+      "Bottom Diameter • D";
+
+    modalTitle.textContent =
+      "Enter Bottom Diameter";
+
+    modalDescription.textContent =
+      "Measure straight across the inside of the bottom.";
+
+    modalInput.value =
+      bottomDiameter ?? "";
+
+  }
 
 
-[
-  topInput,
-  bottomInput,
-  heightInput
-]
-.forEach(input => {
+  if (type === "height") {
 
-  input.addEventListener(
-    "input",
-    () => {
+    modalBadge.textContent =
+      "Vertical Height • h";
 
-      updateShape();
+    modalTitle.textContent =
+      "Enter Vertical Height";
 
-      /*
-        Reset liquid if dimensions change.
-      */
+    modalDescription.textContent =
+      "Measure straight upward inside the container. Do not measure the sloped wall.";
 
-      milkGroup.classList.remove(
-        "filled"
-      );
+    modalInput.value =
+      verticalHeight ?? "";
 
-      resultCard.classList.remove(
-        "show"
-      );
+  }
 
-    }
+
+  modalOverlay.classList.add(
+    "show"
   );
 
-});
+  modalOverlay.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.classList.add(
+    "modal-open"
+  );
+
+
+  /*
+    A short delay makes autofocus
+    more reliable on phones.
+  */
+
+  setTimeout(
+    () => {
+
+      modalInput.focus();
+
+      modalInput.select();
+
+    },
+    100
+  );
+
+}
+
+
+function closeModal() {
+
+  modalOverlay.classList.remove(
+    "show"
+  );
+
+  modalOverlay.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  document.body.classList.remove(
+    "modal-open"
+  );
+
+  modalInput.blur();
+
+}
+
+
+function saveMeasurement() {
+
+  const value =
+    parseFloat(
+      modalInput.value
+    );
+
+
+  if (
+    !Number.isFinite(value) ||
+    value <= 0
+  ) {
+
+    modalError.textContent =
+      "Please enter a number greater than zero.";
+
+    return;
+
+  }
+
+
+  if (
+    currentMeasurement === "top"
+  ) {
+
+    topDiameter = value;
+
+  }
+
+
+  if (
+    currentMeasurement === "bottom"
+  ) {
+
+    bottomDiameter = value;
+
+  }
+
+
+  if (
+    currentMeasurement === "height"
+  ) {
+
+    verticalHeight = value;
+
+  }
+
+
+  closeModal();
+
+  updateDisplay();
+
+  updateShape();
+
+  resetResult();
+
+  guideNextMeasurement();
+
+}
+
+
+/* =========================================================
+   DISPLAY
+========================================================= */
+
+function updateDisplay() {
+
+  topValue.textContent =
+    topDiameter
+      ? `${topDiameter} cm`
+      : "TAP TO ENTER";
+
+
+  bottomValue.textContent =
+    bottomDiameter
+      ? `${bottomDiameter} cm`
+      : "TAP TO ENTER";
+
+
+  heightValue.textContent =
+    verticalHeight
+      ? `${verticalHeight} cm`
+      : "TAP TO ENTER";
+
+}
+
+
+/* =========================================================
+   SHAPE
+========================================================= */
+
+function updateShape() {
+
+  const top =
+    topDiameter || 30;
+
+  const bottom =
+    bottomDiameter || 45;
+
+  const height =
+    verticalHeight || 50;
+
+
+  const largestDiameter =
+    Math.max(
+      top,
+      bottom
+    );
+
+
+  const topRatio =
+    top /
+    largestDiameter;
+
+
+  const bottomRatio =
+    bottom /
+    largestDiameter;
+
+
+  const maxHalfWidth =
+    150;
+
+
+  const topHalf =
+    clamp(
+      maxHalfWidth *
+      topRatio,
+
+      55,
+      150
+    );
+
+
+  const bottomHalf =
+    clamp(
+      maxHalfWidth *
+      bottomRatio,
+
+      55,
+      150
+    );
+
+
+  const centerX =
+    280;
+
+
+  const heightScale =
+    clamp(
+      height / 50,
+
+      0.65,
+      1.25
+    );
+
+
+  const topY =
+    120;
+
+
+  const bottomY =
+    clamp(
+      topY +
+      280 *
+      heightScale,
+
+      300,
+      410
+    );
+
+
+  const topLeft =
+    centerX -
+    topHalf;
+
+
+  const topRight =
+    centerX +
+    topHalf;
+
+
+  const bottomLeft =
+    centerX -
+    bottomHalf;
+
+
+  const bottomRight =
+    centerX +
+    bottomHalf;
+
+
+  const path = `
+
+    M ${topLeft} ${topY}
+
+    Q ${centerX}
+      ${topY - 27}
+      ${topRight}
+      ${topY}
+
+    L ${bottomRight}
+      ${bottomY}
+
+    Q ${centerX}
+      ${bottomY + 38}
+      ${bottomLeft}
+      ${bottomY}
+
+    Z
+
+  `;
+
+
+  containerBody.setAttribute(
+    "d",
+    path
+  );
+
+
+  clipShape.setAttribute(
+    "d",
+    path
+  );
+
+
+  topEllipse.setAttribute(
+    "rx",
+    topHalf
+  );
+
+
+  bottomCurve.setAttribute(
+    "d",
+
+    `
+      M ${bottomLeft}
+        ${bottomY}
+
+      Q ${centerX}
+        ${bottomY + 38}
+        ${bottomRight}
+        ${bottomY}
+    `
+  );
+
+
+  shadow.setAttribute(
+    "cy",
+    bottomY + 30
+  );
+
+
+  shadow.setAttribute(
+    "rx",
+    bottomHalf + 8
+  );
+
+
+  topLine.setAttribute(
+    "x1",
+    topLeft
+  );
+
+  topLine.setAttribute(
+    "x2",
+    topRight
+  );
+
+
+  bottomLine.setAttribute(
+    "x1",
+    bottomLeft
+  );
+
+  bottomLine.setAttribute(
+    "x2",
+    bottomRight
+  );
+
+
+  heightLine.setAttribute(
+    "y2",
+    bottomY
+  );
+
+}
+
+
+/* =========================================================
+   USER GUIDANCE
+========================================================= */
+
+function guideNextMeasurement() {
+
+  if (!topDiameter) {
+
+    highlight("top");
+
+    tapMessage.textContent =
+      "👆 Tap Top Diameter.";
+
+    return;
+
+  }
+
+
+  if (!bottomDiameter) {
+
+    highlight("bottom");
+
+    tapMessage.textContent =
+      "👆 Great. Now tap Bottom Diameter.";
+
+    return;
+
+  }
+
+
+  if (!verticalHeight) {
+
+    highlight("height");
+
+    tapMessage.textContent =
+      "👆 Last one: tap Vertical Height.";
+
+    return;
+
+  }
+
+
+  clearHighlight();
+
+  tapMessage.textContent =
+    "✅ All measurements entered. Press Calculate Litres.";
+
+}
 
 
 /* =========================================================
@@ -2302,69 +2364,37 @@ heightInput.addEventListener(
 
 function calculateVolume() {
 
-  const top =
-    getNumber(topInput);
-
-  const bottom =
-    getNumber(bottomInput);
-
-  const height =
-    getNumber(heightInput);
-
-
   if (
-    !top ||
-    !bottom ||
-    !height ||
-    top <= 0 ||
-    bottom <= 0 ||
-    height <= 0
+    !topDiameter ||
+    !bottomDiameter ||
+    !verticalHeight
   ) {
 
-    errorBox.classList.add(
-      "show"
-    );
-
-    resultCard.classList.remove(
-      "show"
-    );
+    guideNextMeasurement();
 
     return;
 
   }
 
 
-  errorBox.classList.remove(
-    "show"
-  );
+  const volumeCm3 =
 
-
-  /*
-    CONICAL FRUSTUM FORMULA
-
-    Using diameters directly:
-
-              π × h
-    V = ---------------- ×
-             12
-
-        (D₁² + D₁D₂ + D₂²)
-
-  */
-
-
-  const cubicCentimetres =
+    Math.PI *
+    verticalHeight *
 
     (
-      Math.PI *
-      height *
-      (
-        bottom * bottom
-        +
-        bottom * top
-        +
-        top * top
-      )
+      bottomDiameter *
+      bottomDiameter
+
+      +
+
+      bottomDiameter *
+      topDiameter
+
+      +
+
+      topDiameter *
+      topDiameter
     )
 
     /
@@ -2372,39 +2402,31 @@ function calculateVolume() {
     12;
 
 
-  /*
-    1000 cm³ = 1 litre
-  */
-
   const litres =
-    cubicCentimetres /
+    volumeCm3 /
     1000;
 
 
-  /*
-    Friendly display precision.
-  */
-
-  let litreDisplay;
+  let displayLitres;
 
 
   if (litres >= 1000) {
 
-    litreDisplay =
+    displayLitres =
       litres.toFixed(0);
 
   }
 
   else if (litres >= 100) {
 
-    litreDisplay =
+    displayLitres =
       litres.toFixed(1);
 
   }
 
   else {
 
-    litreDisplay =
+    displayLitres =
       litres.toFixed(2);
 
   }
@@ -2413,14 +2435,14 @@ function calculateVolume() {
   document.getElementById(
     "litreValue"
   ).textContent =
-    litreDisplay;
+    displayLitres;
 
 
   document.getElementById(
     "cmValue"
   ).textContent =
 
-    cubicCentimetres
+    volumeCm3
       .toLocaleString(
         undefined,
         {
@@ -2430,34 +2452,21 @@ function calculateVolume() {
 
 
   document.getElementById(
-    "friendlyResult"
+    "resultMessage"
   ).textContent =
 
-    `This container can hold approximately ${litreDisplay} litres.`;
+    `This container can hold approximately ${displayLitres} litres.`;
 
 
-  /*
-    Show result.
-  */
-
-  resultCard.classList.add(
+  result.classList.add(
     "show"
   );
 
-
-  /*
-    Fill container with milk.
-  */
 
   milkGroup.classList.remove(
     "filled"
   );
 
-
-  /*
-    Force browser to register
-    reset before animation.
-  */
 
   void milkGroup.offsetWidth;
 
@@ -2467,147 +2476,259 @@ function calculateVolume() {
   );
 
 
-  clearHighlights();
+  tapMessage.textContent =
+    `🥛 Approximately ${displayLitres} litres.`;
 
 
-  stepBubble.textContent =
-    `🥛 About ${litreDisplay} litres!`;
-
-
-  /*
-    On phones, bring result
-    into view.
-
-    PC users usually already
-    see everything.
-  */
-
-  if (
-    window.innerWidth < 850
-  ) {
-
-    setTimeout(
-      () => {
-
-        resultCard.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-
-      },
-      450
-    );
-
-  }
+  clearHighlight();
 
 }
 
 
 /* =========================================================
-   BUTTON EVENTS
+   RESET RESULT
 ========================================================= */
 
-calculateButton.addEventListener(
-  "click",
-  calculateVolume
-);
+function resetResult() {
+
+  result.classList.remove(
+    "show"
+  );
 
 
-exampleButton.addEventListener(
-  "click",
-  () => {
+  milkGroup.classList.remove(
+    "filled"
+  );
 
-    topInput.value = 30;
-
-    bottomInput.value = 45;
-
-    heightInput.value = 50;
-
-
-    updateShape();
-
-    calculateVolume();
-
-  }
-);
-
-
-resetButton.addEventListener(
-  "click",
-  () => {
-
-    topInput.value = "";
-
-    bottomInput.value = "";
-
-    heightInput.value = "";
-
-
-    errorBox.classList.remove(
-      "show"
-    );
-
-
-    resultCard.classList.remove(
-      "show"
-    );
-
-
-    milkGroup.classList.remove(
-      "filled"
-    );
-
-
-    clearHighlights();
-
-
-    stepBubble.textContent =
-      "👆 Start with the top diameter.";
-
-
-    updateShape();
-
-
-    topInput.focus();
-
-  }
-);
+}
 
 
 /* =========================================================
-   ENTER KEY
+   TAP EVENTS
 ========================================================= */
 
-[
-  topInput,
-  bottomInput,
-  heightInput
-]
-.forEach(input => {
+document
+  .getElementById(
+    "topClick"
+  )
+  .addEventListener(
+    "click",
+    () =>
+      openMeasurement(
+        "top"
+      )
+  );
 
-  input.addEventListener(
-    "keydown",
-    event => {
 
-      if (
-        event.key === "Enter"
-      ) {
+document
+  .getElementById(
+    "bottomClick"
+  )
+  .addEventListener(
+    "click",
+    () =>
+      openMeasurement(
+        "bottom"
+      )
+  );
 
-        calculateVolume();
 
-      }
+document
+  .getElementById(
+    "heightClick"
+  )
+  .addEventListener(
+    "click",
+    () =>
+      openMeasurement(
+        "height"
+      )
+  );
+
+
+/* =========================================================
+   MODAL BUTTONS
+========================================================= */
+
+document
+  .getElementById(
+    "saveModal"
+  )
+  .addEventListener(
+    "click",
+    saveMeasurement
+  );
+
+
+document
+  .getElementById(
+    "cancelModal"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      closeModal();
+
+      guideNextMeasurement();
 
     }
   );
 
-});
+
+modalInput.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Enter"
+    ) {
+
+      saveMeasurement();
+
+    }
+
+  }
+);
 
 
 /* =========================================================
-   INITIAL DRAWING
+   CLOSE WHEN TAPPING BACKDROP
 ========================================================= */
 
+modalOverlay.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      modalOverlay
+    ) {
+
+      closeModal();
+
+      guideNextMeasurement();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   ESC
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Escape" &&
+      modalOverlay.classList.contains(
+        "show"
+      )
+    ) {
+
+      closeModal();
+
+      guideNextMeasurement();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   CALCULATE
+========================================================= */
+
+document
+  .getElementById(
+    "calculateButton"
+  )
+  .addEventListener(
+    "click",
+    calculateVolume
+  );
+
+
+/* =========================================================
+   EXAMPLE
+========================================================= */
+
+document
+  .getElementById(
+    "exampleButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      topDiameter =
+        30;
+
+      bottomDiameter =
+        45;
+
+      verticalHeight =
+        50;
+
+
+      updateDisplay();
+
+      updateShape();
+
+      calculateVolume();
+
+    }
+  );
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+document
+  .getElementById(
+    "resetButton"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      topDiameter =
+        null;
+
+      bottomDiameter =
+        null;
+
+      verticalHeight =
+        null;
+
+
+      updateDisplay();
+
+      updateShape();
+
+      resetResult();
+
+      guideNextMeasurement();
+
+    }
+  );
+
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+updateDisplay();
+
 updateShape();
+
+guideNextMeasurement();
 
 </script>
 
